@@ -30,8 +30,8 @@ const data = [
     },
     {
         id: 5,
-        image: './assets/sample4.jpeg',
-        name : '더 맛있는 황도',
+        image: './assets/sample5.jpeg',
+        name : '햄계란',
         price: 500000,
         able: true
     },
@@ -50,8 +50,8 @@ data.forEach((menu) => {
     menuContainer.appendChild(menuBox);
 
     menuBox.innerHTML = `
-        <div class="menu-img"> 
-            <img src="${menu.image}">
+        <div class="menu-img-wrap"> 
+            <img class="menu-img" src="${menu.image}">
         </div>
         <div class="menu-info">
             <div class="menu-name">${menu.name}</div>
