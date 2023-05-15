@@ -10,7 +10,12 @@ const inProgressButton = document.querySelector('#in-progress-order-button');
 const orderContainer = document.querySelector('.order-container');
 const completedButton = document.querySelector('#complete-order-button');
 const completedOrderContainer = document.querySelector('.completed-order-container');
+const menuStateButton = document.querySelector('#menu-state-button');
 const completed_at = {};
+
+menuStateButton.addEventListener('click', () => {
+    window.location.href = './menu.html'; 
+});
 
 inProgressButton.addEventListener('click', () => {
     orderContainer.classList.toggle('active');

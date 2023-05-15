@@ -79,6 +79,17 @@
         padding: 0.2rem 0;
     }
 
+    .back-button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    #menu-state-button {
+        width: 3rem;
+    }
+
     #in-progress-order-button.active {
         border-top: 1px solid #5E5E5E;
         border-left: 1px solid #5E5E5E;

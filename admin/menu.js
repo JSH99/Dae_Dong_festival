@@ -37,7 +37,12 @@ const data = [
     },
 ];
 
+const backButton = document.querySelector('.back-button');
 const menuContainer = document.querySelector('.menu-container');
+
+backButton.addEventListener('click', () => {
+    window.location.href = './admin.html'; 
+});
 
 data.forEach((menu) => {
     const menuBox = document.createElement('div');
