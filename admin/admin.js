@@ -12,6 +12,7 @@ const completedButton = document.querySelector('#complete-order-button');
 const completedOrderContainer = document.querySelector('.completed-order-container');
 const menuStateButton = document.querySelector('#menu-state-button');
 const completed_at = {};
+const completedBoxes = Array.from(completedOrderContainer.getElementsByClassName('order-box'));
 
 menuStateButton.addEventListener('click', () => {
     window.location.href = './menu.html'; 
@@ -74,33 +75,37 @@ data.forEach((order) => {
     orderBox.appendChild(completeButtonWrap);
 
     const completeButton = document.createElement('button');
-    completeButton.textContent = 'finish';
+    completeButton.textContent = '입금 확인';
     completeButton.classList.add('complete-button');
-    
+
     // 진행 중인 주문이 맞으면 orderBox를 orderContainer에 추가
-    if(order.status === 'in_progress') {
+    if(order.status === 'done') {
+        completedOrderContainer.appendChild(orderBox);
+    } else {
         completeButtonWrap.appendChild(completeButton);
         orderContainer.appendChild(orderBox);
-    } else {
-        completedOrderContainer.appendChild(orderBox);
     }
 
-    // 완료 버튼 누르면 진행중인 주문 -> 완료 주문 
+    // 버튼 누르면 입급 확인 중 -> 조리 중 -> 완료
     completeButton.addEventListener('click', () => {
         const orderId = orderBox.getAttribute('id').split('-')[2];
         const orderBoxIdDiv = document.querySelector(`#order-box-${orderId}`);
         const now = new Date();
 
-        completed_at[orderId] = now;
-
-        // 주문 상태 변경하기 API 호출 
-        const body = {
-            state : "done"
-        };
-
-        fetch('/order/state/update/', { // 임시 URI
-            method: 'POST',
-            body: JSON.stringify(body)
+        // 입금 확인 버튼 누르면 입금 확인 중 -> 조리 중
+        if(order.status === 'checking') {
+            const body = {
+                id : orderId,
+                state : "in_progress"
+            };
+    
+            fetch('/order/state/update/', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // csrftoken을 넣어줌
+                },
+                body: JSON.stringify(body)
             })
             .then(response => {
                 if (response.ok) {
@@ -113,32 +118,58 @@ data.forEach((order) => {
                 console.error('상태 업데이트 요청이 실패했습니다:', error);
             });
 
-        order.status = 'done'; // API 호출 시 삭제할 코드 (임시로 수동으로 바꿈)
+            completeButton.textContent = 'finish';
+            order.status = 'in_progress';
 
-        // 주문 상태 변경하기 API 호출 성공해서 status가 done으로 바뀌면 div 이동
-        if (order.status === 'done' && orderId == order.id) {
-            orderContainer.removeChild(orderBoxIdDiv);
-            completeButtonWrap.removeChild(completeButton);
-            completedOrderContainer.appendChild(orderBoxIdDiv);
+        } else { // finish 버튼 누르면 진행중인 주문 -> 완료 주문 
+            const body = {
+                id : orderId,
+                state : "done"
+            };
+    
+            fetch('/order/state/update/', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // csrftoken을 넣어줌
+                },
+                body: JSON.stringify(body)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('상태 업데이트 요청이 성공적으로 전송되었습니다.');
+                } else {
+                    console.error('상태 업데이트 요청 전송 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('상태 업데이트 요청이 실패했습니다:', error);
+            });
+
+            order.status = 'done';
+            completed_at[orderId] = now;
+            
+            // 주문 상태 변경하기 API 호출 성공해서 status가 done으로 바뀌면 div 이동
+            if (order.status === 'done' && orderId == order.id) {
+                // orderContainer.removeChild(orderBoxIdDiv);
+                completeButtonWrap.removeChild(completeButton);
+                completedOrderContainer.appendChild(orderBoxIdDiv);
+            }
         }
-
-        // 생성 시간 정렬 => 가장 최근에 완료된 주문이 첫 번째로 보이게
         const sortedTime = Object.entries(completed_at)
             .sort((a, b) => new Date(b[1]) - new Date(a[1]));
-
+        
         const sortedKeys = sortedTime.map(([key]) => parseInt(key));
-        console.log(sortedKeys);
 
-        // 정렬된 orderBox를 completedOrderContainer에 추가
         sortedKeys.forEach((orderId) => {
             const orderBox = document.getElementById(`order-box-${orderId}`);
-            if (orderBox) {
-                completedOrderContainer.appendChild(orderBox);
+            if (orderBox && !completedBoxes.includes(orderBox)) {
+              completedOrderContainer.appendChild(orderBox);
             }
         });
 
-
     });
+    
 
     // 80분 경과 시 표시
     const isTimeOut = (datetime) => {

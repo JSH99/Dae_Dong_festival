@@ -14,7 +14,7 @@ export const data = [
             }],
         table_num: 8,
         created_at: '05-12 23:21:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 2,
@@ -30,7 +30,7 @@ export const data = [
             }],
         table_num: 10,
         created_at: '05-13 16:21:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 3,
@@ -42,7 +42,7 @@ export const data = [
             }],
         table_num: 3,
         created_at: '05-13 20:21:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 4,
@@ -62,7 +62,7 @@ export const data = [
             }],
         table_num: 11,
         created_at: '05-14 20:21:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 5,
@@ -82,7 +82,7 @@ export const data = [
             }],
         table_num: 1,
         created_at: '05-15 20:21:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 6,
@@ -98,7 +98,7 @@ export const data = [
             }],
         table_num: 5,
         created_at: '05-15 22:21:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 7,
@@ -114,7 +114,7 @@ export const data = [
             }],
         table_num: 100,
         created_at: '05-15 23:41:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 8,
@@ -130,7 +130,7 @@ export const data = [
             }],
         table_num: 20,
         created_at: '05-15 23:50:55',
-        status: 'in_progress'
+        status: 'checking'
     },
     {
         id: 9,
@@ -142,6 +142,6 @@ export const data = [
             }],
         table_num: 55,
         created_at: '05-16 09:21:55',
-        status: 'in_progress'
+        status: 'checking'
     },
   ];
