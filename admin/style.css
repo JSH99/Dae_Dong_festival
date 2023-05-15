@@ -232,8 +232,8 @@
     .menu-list {
         width: 93vw;
         position: sticky;
-        top: 4.5rem; 
-        height: calc(100vh - 4.5rem);
+        top: 7.5rem; 
+        height: calc(100vh - 7.5rem);
         overflow-y: auto; 
     }
 
